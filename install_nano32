@@ -1,0 +1,16 @@
+OLDNANO=$(which nano)
+rm -rf build
+cd
+mkdir build
+cd build
+wget https://mirrors.ocf.berkeley.edu/gnu/nano/nano-3.2.tar.gz
+tar -xvzf nano-3.2.tar.gz
+cd nano-3.2
+yum -y install ncurses-devel
+./configure --disable-utf8
+make
+yum -y remove nano
+make install
+ln -s /usr/local/bin/nano ${OLDNANO}
+wget https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh
+
