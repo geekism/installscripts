@@ -1,0 +1,22 @@
+#!/bin/bash
+# Perform the install?
+DOINSTALL=1
+if [[ -e /usr/bin/apt ]]; then
+	NEWPLEX=$(wget -q -O- https://plex.tv/pms/downloads/5.json | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"|grep debian|grep amd64)
+	PLEXVER="$(echo $NEWPLEX|grep -Eo "_([a-z0-9.-]*)_"|sed 's/_//g')"
+	NEWPLEXPACKAGE="plexmediaserver_${PLEXVER}_amd64.deb"
+	COMMAND="dpkg -i"
+elif [[ -e /usr/bin/yum ]]; then
+	NEWPLEX=$(wget -q -O- https://plex.tv/pms/downloads/5.json | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"|grep x86_64.rpm)
+	PLEXVER=$(echo $NEWPLEX|grep -Eo "\-([a-z0-9.-]*)\."|sed 's/_//g')
+	NEWPLEXPACKAGE="plexmediaserver${PLEXVER}x86_64.rpm"
+	COMMAND="yum install"
+fi
+
+if [[ ! -e ${NEWPLEXPACKAGE} ]]; then
+	wget -q $NEWPLEX
+	if [[ ${DOINSTALL} -eq "1" ]]; then
+		sudo "${COMMAND} ${NEWPLEXPACKAGE}"
+	fi
+fi
+
