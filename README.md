@@ -16,5 +16,5 @@ wget -OgetPlex https://raw.githubusercontent.com/geekism/installscripts/master/i
 Crontab Entry:
 Enter this as root. Or give user sudo access.
 ```sh
-@daily sh -c 'cd /home/username/bin/ && wget -1OgetPlex https://raw.githubusercontent.com/geekism/installscripts/master/install_plex | bash getPlex >/dev/null 2>&1'
+@daily sh -c 'cd /home/username/bin/ && wget -O/tmp/getPlex https://raw.githubusercontent.com/geekism/installscripts/master/install_plex | bash /tmp/getPlex >/dev/null 2>&1'
 ```
